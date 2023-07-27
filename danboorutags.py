@@ -13,8 +13,7 @@ def clear_screen():
         pass
 
 
-def main():
-    image_id = '6110318'
+def main(image_id):
     base_url = 'https://danbooru.donmai.us/posts'
 
     clear_screen()
@@ -32,13 +31,21 @@ def main():
     character = data['tag_string_character']
     origin = data['tag_string_copyright']
     tags = data['tag_string_general']
-    prompt = f'{character} {origin} {tags}'
+    tags = tags.replace(" ", ", ")
+    prompt = f'{character.replace("_", " ")}, {tags.replace("_", " ")}'
 
     print(f'Character: {character}')
     print(f'Origin: {origin}')
-    print(f'Tags: {tags.replace(" ", ", ")}')
-    print(f'\nPrompt: {prompt.replace(" ", ", ")}')
+    print(f'Tags: {tags}')
+    print(f'\nPrompt: {prompt}')
 
   
 if __name__ == '__main__':
-    main()
+    args = sys.argv
+    if len(args) < 2:
+        print("usage: python danboorutags.py [image id]")
+        exit(0)
+    
+    image_id = args[1]
+    
+    main(image_id)
